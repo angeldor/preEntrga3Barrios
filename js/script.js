@@ -13,6 +13,7 @@ const singUpPage = document.getElementById("singUpPage")
 const taskPage = document.getElementById("taskPage")
 const loginForm = document.getElementById("login")
 const singUpForm = document.getElementById("singUp")
+let usuarioActual = null
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -59,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 loginPage.classList.add("oculto")
                 taskPage.classList.remove("oculto")
             }
+            usuarioActual = usuarioValido
         } else {
             alert("Credenciales incorrectas")
         }
