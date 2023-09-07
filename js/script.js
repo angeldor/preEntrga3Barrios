@@ -139,3 +139,6 @@ function mostrarTarea(){
 }
 
 mostrarTarea()
+
+//no logre que las tareas se guardaran en el array de cada usuario
+// dejo la version de tareas que se guardan en un data localStorage
