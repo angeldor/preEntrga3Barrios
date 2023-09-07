@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="loginPage">
+        <form id="login">
+          <h1>Inicio de sesión</h1>
+          <div class="inputBox">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Nombre de usuario"
+            />
+            <i class="bx bxs-user"></i>
+          </div>
+          <div class="inputBox">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Contraseña"
+            />
+            <i class="bx bxs-lock-alt"></i>
+          </div>
+          <button class="btn" id="iniciarSesion">Iniciar Sesion</button>
+        </form>
+        <div>
+          <p>¿No tienes un usuario? Regístrate aqui</p>
+          <button class="btn" id="registrarse">Registrarse</button>
+        </div>
+      </div>
+      <div id="taskPage" class="oculto">
+        <h2>Lista de tareas<i class="bx bx-task"></i></h2>
+        <div class="tareaNueva">
+          <div class="row">
+            <input
+              type="text"
+              id="inputBox"
+              placeholder="Agregar una nueva tarea"
+            />
+            <button onclick="agregarTarea()">Agregar</button>
+          </div>
+          <ul id="listContainer">
+            <li class="hecho">Tarea 1</li>
+            <li>Tarea 2</li>
+            <li>Tarea 3</li>
+          </ul>
+        </div>
+      </div>
+      <div id="singUpPage" class="oculto">
+        <form id="singUp">
+          <h2>Ingresa tus datos para registrarte</h2>
+          <div class="inputBox">
+            <input type="text" id="nombreRegistro" placeholder="Nombre" />
+            <i class="bx bxs-user"></i>
+          </div>
+          <div class="inputBox">
+            <input
+              type="text"
+              id="nombreUsuarioRegistro"
+              placeholder="Nombre de usuario"
+            />
+            <i class="bx bxs-user"></i>
+          </div>
+          <div class="inputBox">
+            <input
+              type="password"
+              id="contraseñaRegistro"
+              placeholder="Contraseña"
+            />
+            <i class="bx bxs-lock-alt"></i>
+          </div>
+          <button class="btn">Registrarse</button>
+        </form>
+        <div>
+          <p>¿Ya tienes usuario? Inicia sesión aquí!</p>
+          <button class="btn" id="loginButton">Iniciar Sesión</button>
+        </div>
+      </div>
+    </div>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
