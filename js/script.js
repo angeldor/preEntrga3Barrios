@@ -14,7 +14,95 @@ const taskPage = document.getElementById("taskPage")
 const loginForm = document.getElementById("login")
 const singUpForm = document.getElementById("singUp")
 let usuarioActual = null
+const inputBox = document.getElementById("inputBox")
+const listContainer = document.getElementById("listContainer")
 
+function registrarUsuario() {
+    const nombre = document.getElementById("nombreRegistro").value
+    const nombreUsuario = document.getElementById("nombreUsuarioRegistro").value
+    const contraseña = document.getElementById("contraseñaRegistro").value
+
+    const usuarioExistente = usuarios.find((usuario) => {
+        return usuario.nombreUsuario === nombreUsuario
+    })
+
+    if (usuarioExistente) {
+        alert("Nombre de usuario ya existe")
+    } else if (nombre == "" || nombreUsuario == "" || contraseña == "") {
+        alert("Debes completar todos los campos")
+    } else {
+        const nuevoUsuario = {
+            nombre: nombre,
+            nombreUsuario: nombreUsuario,
+            contraseña: contraseña,
+            tareas: []
+        }
+        usuarios.push(nuevoUsuario)
+        localStorage.setItem("usuarios", JSON.stringify(usuarios))
+        alert("Registro Exitoso")
+    }
+}
+
+function validarLogin() {
+    const username = document.getElementById("username").value
+    const password = document.getElementById("password").value
+
+    const usuarioValido = usuarios.find((usuario) => {
+        return usuario.nombreUsuario === username && usuario.contraseña === password
+    })
+    if (usuarioValido) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Genial!',
+            text: 'Iniciaste sesión',
+            showConfirmButton: false,
+            timer: 1000
+        })
+        if (loginPage.classList.contains("oculto")) {
+            loginPage.classList.remove("oculto")
+            taskPage.classList.add("oculto")
+        } else {
+            loginPage.classList.add("oculto")
+            taskPage.classList.remove("oculto")
+        }
+        usuarioActual = usuarioValido
+        console.log(usuarioActual)
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Usuario o contraseña incorrectos!'
+        })
+    }
+}
+
+function agregarTarea() {
+    if (inputBox.value === '') {
+        alert(`No puedes agregar una tarea vacia`)
+        Swal.fire({
+            icon: 'error',
+            title: 'No puedes agregar tareas vacías',
+            showConfirmButton: false,
+            timer: 1000
+        })
+    } else {
+        let li = document.createElement("li")
+        li.innerHTML = inputBox.value
+        listContainer.appendChild(li)
+        let span = document.createElement("span")
+        span.innerHTML = "\u00d7"
+        li.appendChild(span)
+        guardarDatos()
+    }
+    inputBox.value = ``
+}
+function guardarDatos() {
+    localStorage.setItem("data", listContainer.innerHTML)
+}
+
+function mostrarTarea() {
+    listContainer.innerHTML = localStorage.getItem("data")
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     toggleButtonSingUp.addEventListener('click', function () {
@@ -44,52 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (usuariosGuardados) {
         usuarios = JSON.parse(usuariosGuardados)
     }
-    function validarLogin() {
-        const username = document.getElementById("username").value
-        const password = document.getElementById("password").value
-
-        const usuarioValido = usuarios.find((usuario) => {
-            return usuario.nombreUsuario === username && usuario.contraseña === password
-        })
-        if (usuarioValido) {
-            alert("Inicio de sesion exitoso")
-            if (loginPage.classList.contains("oculto")) {
-                loginPage.classList.remove("oculto")
-                taskPage.classList.add("oculto")
-            } else {
-                loginPage.classList.add("oculto")
-                taskPage.classList.remove("oculto")
-            }
-            usuarioActual = usuarioValido
-        } else {
-            alert("Credenciales incorrectas")
-        }
-    }
-    function registrarUsuario() {
-        const nombre = document.getElementById("nombreRegistro").value
-        const nombreUsuario = document.getElementById("nombreUsuarioRegistro").value
-        const contraseña = document.getElementById("contraseñaRegistro").value
-
-        const usuarioExistente = usuarios.find((usuario) => {
-            return usuario.nombreUsuario === nombreUsuario
-        })
-
-        if (usuarioExistente) {
-            alert("Nombre de usuario ya existe")
-        } else if (nombre == "" || nombreUsuario == "" || contraseña == "") {
-            alert("Debes completar todos los campos")
-        } else {
-            const nuevoUsuario = {
-                nombre: nombre,
-                nombreUsuario: nombreUsuario,
-                contraseña: contraseña,
-                tareas: []
-            }
-            usuarios.push(nuevoUsuario)
-            localStorage.setItem("usuarios", JSON.stringify(usuarios))
-            alert("Registro Exitoso")
-        }
-    }
     loginForm.addEventListener("submit", function (e) {
         e.preventDefault()
         validarLogin()
@@ -101,44 +143,14 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 })
 
-const inputBox = document.getElementById("inputBox")
-const listContainer = document.getElementById("listContainer")
-
-function agregarTarea(){
-    if(inputBox.value === ''){
-        alert(`No puedes agregar una tarea vacia`)
-    }else{
-        let li = document.createElement("li")
-        li.innerHTML = inputBox.value
-        listContainer.appendChild(li)
-        let span = document.createElement("span")
-        span.innerHTML = "\u00d7"
-        li.appendChild(span)
-        guardarDatos()
-    }
-    inputBox.value = ``
-}
-
-listContainer.addEventListener(`click`, function(e){
-    if(e.target.tagName === "LI"){
+listContainer.addEventListener(`click`, function (e) {
+    if (e.target.tagName === "LI") {
         e.target.classList.toggle("hecho")
         guardarDatos()
-    } else if(e.target.tagName === "SPAN"){
+    } else if (e.target.tagName === "SPAN") {
         e.target.parentElement.remove()
         guardarDatos()
     }
 }, false)
 
-
-function guardarDatos(){
-    localStorage.setItem("data", listContainer.innerHTML)
-}
-
-function mostrarTarea(){
-    listContainer.innerHTML = localStorage.getItem("data")
-}
-
 mostrarTarea()
-
-//no logre que las tareas se guardaran en el array de cada usuario
-// dejo la version de tareas que se guardan en un data localStorage

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css" />
+    <link href="./css/style.css" rel="stylesheet" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
@@ -11,6 +11,13 @@
     <title>Document</title>
   </head>
   <body>
+    <header>
+      <nav>
+        <div id="logout">
+          <button>Cerrar Sesion</button>
+        </div>
+      </nav>
+    </header>
     <div class="container">
       <div id="loginPage">
         <form id="login">
@@ -85,6 +92,7 @@
         </div>
       </div>
     </div>
-    <script src="./js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="./js/script.js"></script>
   </body>
 </html>
