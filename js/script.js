@@ -11,11 +11,66 @@ const toggleButtonLogin = document.getElementById("loginButton")
 const loginPage = document.getElementById("loginPage")
 const singUpPage = document.getElementById("singUpPage")
 const taskPage = document.getElementById("taskPage")
+
+document.addEventListener("DOMContentLoaded", function () {
+    toggleButtonSingUp.addEventListener('click', function () {
+        if (loginPage.classList.contains("oculto")) {
+            loginPage.classList.remove("oculto")
+            singUpPage.classList.add("oculto")
+        } else {
+            loginPage.classList.add("oculto")
+            singUpPage.classList.remove("oculto")
+        }
+    })
+})
+document.addEventListener("DOMContentLoaded", function () {
+    toggleButtonLogin.addEventListener('click', function () {
+        if (singUpPage.classList.contains("oculto")) {
+            singUpPage.classList.remove("oculto")
+            loginPage.classList.add("oculto")
+        } else {
+            singUpPage.classList.add("oculto")
+            loginPage.classList.remove("oculto")
+        }
+    })
+})
+
 const loginForm = document.getElementById("login")
 const singUpForm = document.getElementById("singUp")
 let usuarioActual = null
-const inputBox = document.getElementById("inputBox")
-const listContainer = document.getElementById("listContainer")
+
+function validarLogin() {
+    const username = document.getElementById("username").value
+    const password = document.getElementById("password").value
+
+    const usuarioValido = usuarios.find((usuario) => {
+        return usuario.nombreUsuario === username && usuario.contraseña === password
+    })
+    if (usuarioValido) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Genial!',
+            text: 'Iniciaste sesión',
+            showConfirmButton: false,
+            timer: 1000
+        })
+        if (loginPage.classList.contains("oculto")) {
+            loginPage.classList.remove("oculto")
+            taskPage.classList.add("oculto")
+        } else {
+            loginPage.classList.add("oculto")
+            taskPage.classList.remove("oculto")
+        }
+        usuarioActual = usuarioValido
+        console.log(usuarioActual)
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Usuario o contraseña incorrectos!'
+        })
+    }
+}
 
 function registrarUsuario() {
     const nombre = document.getElementById("nombreRegistro").value
@@ -54,38 +109,27 @@ function registrarUsuario() {
     }
 }
 
-function validarLogin() {
-    const username = document.getElementById("username").value
-    const password = document.getElementById("password").value
 
-    const usuarioValido = usuarios.find((usuario) => {
-        return usuario.nombreUsuario === username && usuario.contraseña === password
-    })
-    if (usuarioValido) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Genial!',
-            text: 'Iniciaste sesión',
-            showConfirmButton: false,
-            timer: 1000
-        })
-        if (loginPage.classList.contains("oculto")) {
-            loginPage.classList.remove("oculto")
-            taskPage.classList.add("oculto")
-        } else {
-            loginPage.classList.add("oculto")
-            taskPage.classList.remove("oculto")
-        }
-        usuarioActual = usuarioValido
-        console.log(usuarioActual)
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Usuario o contraseña incorrectos!'
-        })
+
+document.addEventListener("DOMContentLoaded", function () {
+    const usuariosGuardados = localStorage.getItem("usuarios")
+    if (usuariosGuardados) {
+        usuarios = JSON.parse(usuariosGuardados)
     }
-}
+    loginForm.addEventListener("submit", function (e) {
+        e.preventDefault()
+        validarLogin()
+    })
+
+    singUpForm.addEventListener("submit", function (e) {
+        e.preventDefault()
+        registrarUsuario()
+    })
+})
+
+const inputBox = document.getElementById("inputBox")
+const listContainer = document.getElementById("listContainer")
+const botonAgregarTarea = document.getElementById("agregarTarea")
 
 function agregarTarea() {
     if (inputBox.value === '') {
@@ -113,45 +157,6 @@ function guardarDatos() {
 function mostrarTarea() {
     listContainer.innerHTML = localStorage.getItem("data")
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-    toggleButtonSingUp.addEventListener('click', function () {
-        if (loginPage.classList.contains("oculto")) {
-            loginPage.classList.remove("oculto")
-            singUpPage.classList.add("oculto")
-        } else {
-            loginPage.classList.add("oculto")
-            singUpPage.classList.remove("oculto")
-        }
-    })
-})
-document.addEventListener("DOMContentLoaded", function () {
-    toggleButtonLogin.addEventListener('click', function () {
-        if (singUpPage.classList.contains("oculto")) {
-            singUpPage.classList.remove("oculto")
-            loginPage.classList.add("oculto")
-        } else {
-            singUpPage.classList.add("oculto")
-            loginPage.classList.remove("oculto")
-        }
-    })
-})
-
-document.addEventListener("DOMContentLoaded", function () {
-    const usuariosGuardados = localStorage.getItem("usuarios")
-    if (usuariosGuardados) {
-        usuarios = JSON.parse(usuariosGuardados)
-    }
-    loginForm.addEventListener("submit", function (e) {
-        e.preventDefault()
-        validarLogin()
-    })
-
-    singUpForm.addEventListener("submit", function (e) {
-        e.preventDefault()
-        registrarUsuario()
-    })
-})
 
 listContainer.addEventListener(`click`, function (e) {
     if (e.target.tagName === "LI") {
