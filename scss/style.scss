@@ -8,7 +8,8 @@
 }
 
 body {
-  display: flex;
+  display: grid;
+  grid-template-rows: 100px 750px 150px;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -25,13 +26,58 @@ body {
   align-items: center;
   min-height: 100vh;
 }
+header {
+  grid-row: 1;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  margin-top: 0;
+  height: 100px;
+  position: relative;
+  button {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+  }
+  nav {
+    img {
+      width: 100px;
+    }
+  }
+}
+footer {
+  grid-row: 3;
+  background-color: #edeef0;
+  color: #330a6a;
+  font-weight: 600;
+  padding: 2rem;
+  width: auto;
+  padding: 4px;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    padding: 10px 100px;
+    margin: 10px 20px;
+    text-justify: auto;
+  }
+}
 
 #loginPage,
 #singUpPage {
+  grid-row: 2;
   width: 420px;
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   color: #fff;
   border-radius: 10px;
@@ -170,18 +216,18 @@ ul {
         background-color: #edeef0;
       }
     }
-    &:not(.hecho){
-        text-decoration: none;
+    &:not(.hecho) {
+      text-decoration: none;
     }
-    &.hecho{
-        >span{
-            text-decoration: none;
-        }
-        color: #555;
-        text-decoration: line-through;
-        &::before {
-            background-image: url(../assets/img/icons8-botón-de-radio-comprobado-48.png);
-          }
+    &.hecho {
+      > span {
+        text-decoration: none;
+      }
+      color: #555;
+      text-decoration: line-through;
+      &::before {
+        background-image: url(../assets/img/icons8-botón-de-radio-comprobado-48.png);
+      }
     }
   }
 }

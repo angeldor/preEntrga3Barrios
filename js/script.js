@@ -27,9 +27,16 @@ function registrarUsuario() {
     })
 
     if (usuarioExistente) {
-        alert("Nombre de usuario ya existe")
+        Swal.fire({
+            icon: 'warning',
+            title: 'Nombre de usuario existente'
+        })
     } else if (nombre == "" || nombreUsuario == "" || contraseña == "") {
-        alert("Debes completar todos los campos")
+        Swal.fire({
+            tittle: 'Oh no',
+            icon: 'alert',
+            text: 'Debes completar todos los campos!'
+        })
     } else {
         const nuevoUsuario = {
             nombre: nombre,
@@ -39,7 +46,11 @@ function registrarUsuario() {
         }
         usuarios.push(nuevoUsuario)
         localStorage.setItem("usuarios", JSON.stringify(usuarios))
-        alert("Registro Exitoso")
+        Swal.fire({
+            icon: 'success',
+            tittle: 'Genial',
+            text: 'Te registraste correctamente'
+        })
     }
 }
 
@@ -78,7 +89,6 @@ function validarLogin() {
 
 function agregarTarea() {
     if (inputBox.value === '') {
-        alert(`No puedes agregar una tarea vacia`)
         Swal.fire({
             icon: 'error',
             title: 'No puedes agregar tareas vacías',
