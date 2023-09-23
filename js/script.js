@@ -34,11 +34,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     })
 })
-
 const loginForm = document.getElementById("login")
 const singUpForm = document.getElementById("singUp")
 let usuarioActual = null
+const botonLogout = document.getElementById("logout")
 
+botonLogout.addEventListener("click", function () {
+    location.reload() // Recargar la página
+})
 function validarLogin() {
     const username = document.getElementById("username").value
     const password = document.getElementById("password").value
@@ -71,7 +74,6 @@ function validarLogin() {
         })
     }
 }
-
 function registrarUsuario() {
     const nombre = document.getElementById("nombreRegistro").value
     const nombreUsuario = document.getElementById("nombreUsuarioRegistro").value
@@ -108,9 +110,6 @@ function registrarUsuario() {
         })
     }
 }
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const usuariosGuardados = localStorage.getItem("usuarios")
     if (usuariosGuardados) {
@@ -119,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.addEventListener("submit", function (e) {
         e.preventDefault()
         validarLogin()
+        mostrarTarea()
     })
 
     singUpForm.addEventListener("submit", function (e) {
@@ -126,38 +126,84 @@ document.addEventListener("DOMContentLoaded", function () {
         registrarUsuario()
     })
 })
-
 const inputBox = document.getElementById("inputBox")
 const listContainer = document.getElementById("listContainer")
 const botonAgregarTarea = document.getElementById("agregarTarea")
 
-function agregarTarea() {
+botonAgregarTarea.addEventListener("click", function () {
     if (inputBox.value === '') {
         Swal.fire({
             icon: 'error',
             title: 'No puedes agregar tareas vacías',
             showConfirmButton: false,
             timer: 1000
-        })
+        });
     } else {
-        let li = document.createElement("li")
-        li.innerHTML = inputBox.value
-        listContainer.appendChild(li)
-        let span = document.createElement("span")
-        span.innerHTML = "\u00d7"
-        li.appendChild(span)
+        let li = document.createElement("li");
+        li.innerHTML = inputBox.value;
+        listContainer.appendChild(li);
+        let span = document.createElement("span");
+        span.innerHTML = "\u00d7";
+        li.appendChild(span);
+
         guardarDatos()
+            .then(() => {
+                inputBox.value = '';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tarea agregada',
+                    showConfirmButton: false,
+                    timer: 600
+                });
+            })
+            .catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al guardar los datos',
+                    text: error.message
+                });
+            });
     }
-    inputBox.value = ``
-}
+})
 function guardarDatos() {
-    localStorage.setItem("data", listContainer.innerHTML)
+    return new Promise((resolve, reject) => {
+        if (usuarioActual) {
+            const index = usuarios.findIndex((usuario) => usuario === usuarioActual);
+            if (index !== -1) {
+                usuarios[index].tareas = Array.from(listContainer.children).map((li) => li.textContent);
+                try {
+                    localStorage.setItem("usuarios", JSON.stringify(usuarios)); // Guardar en localStorage
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            }
+        } else {
+            reject(new Error("Usuario no encontrado"));
+        }
+    });
 }
-
 function mostrarTarea() {
-    listContainer.innerHTML = localStorage.getItem("data")
-}
+    listContainer.innerHTML = ''
 
+    if (usuarioActual) {
+        usuarioActual.tareas.forEach((tarea) => {
+            let li = document.createElement("li")
+            li.textContent = tarea
+
+            let span = document.createElement("span")
+            span.innerHTML = "\u00d7"
+
+            li.appendChild(span)
+            listContainer.appendChild(li)
+        });
+    } else {
+        const usuariosGuardados = localStorage.getItem("usuarios")
+        if (usuariosGuardados) {
+            usuarios = JSON.parse(usuariosGuardados)
+        }
+    }
+}
 listContainer.addEventListener(`click`, function (e) {
     if (e.target.tagName === "LI") {
         e.target.classList.toggle("hecho")
@@ -167,5 +213,4 @@ listContainer.addEventListener(`click`, function (e) {
         guardarDatos()
     }
 }, false)
-
 mostrarTarea()
